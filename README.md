@@ -74,3 +74,44 @@ Les résultats constitueront une base d'aide à l'analyse des mesures de préven
 - Observations biologiques biaisées.
 - Des données comportementales manquantes.
 - Les collisions réelles sont sous-déclarées.
+
+## Structure du projet
+
+```text
+Cetaceans-vs.-ships/
+├── plugin-qgis/                 # Plugin Python / PyQGIS intégré à QGIS
+│   ├── controllers/              # Contrôle des interactions et des échanges avec le serveur
+│   ├── resources/                # Ressources du plugin, dont l'icône
+│   ├── services/                 # Services applicatifs et communication
+│   ├── ui/                       # Interface utilisateur
+│   ├── __init__.py               # Point d'entrée du plugin QGIS
+│   ├── main.py                   # Initialisation du plugin
+│   ├── metadata.txt              # Métadonnées reconnues par QGIS
+│   ├── pyproject.toml            # Configuration et dépendances Python
+│   ├── uv.lock                   # Versions verrouillées des dépendances Python
+│   └── README.md
+├── server/                       # Serveur et futur moteur de simulation Go
+│   ├── cmd/                      # Emplacement prévu pour les exécutables
+│   ├── go.mod                    # Module et dépendances Go
+│   └── README.md
+├── docs/                         # Documentation du projet
+│   ├── architecture/             # Architecture des composants et échanges
+│   ├── sources/                  # Documents et références documentaires
+│   └── user-guide/               # Emplacement prévu pour le guide utilisateur
+├── contracts/                    # Contrats des interfaces entre composants
+│   └── openapi.yaml              # Description de l'API REST
+├── deployment/                   # Configuration de déploiement
+│   └── compose.yaml              # Services Docker Compose
+├── .gitignore
+└── README.md                     # Présentation générale du projet
+```
+
+Le plugin QGIS fournit l'interface qui contrôle la simulation. Les dossiers `ui/`, `controllers/` et `services/` sont les emplacements des différentes parties du plugin ; `resources/` contient actuellement son icône. Le serveur Go est destiné à porter le moteur de simulation, tandis que le contrat OpenAPI décrit son interface REST. La documentation d'architecture précise la séparation des responsabilités et les échanges entre ces composants.
+
+Certains dossiers, notamment `server/cmd/` et `docs/user-guide/`, sont encore des emplacements de travail et peuvent être vides.
+
+### README des composants
+
+- [README du plugin QGIS](plugin-qgis/README.md) : installation de l'environnement Python et commandes de vérification.
+- [README du serveur Go](server/README.md) : informations de démarrage du module Go.
+- [Documentation d'architecture](docs/architecture/README.md) : rôles du serveur, du plugin et de QGIS, ainsi que les échanges REST et WebSocket.
