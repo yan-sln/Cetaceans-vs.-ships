@@ -1,0 +1,41 @@
+[general]
+# ---- REQUIRED KEYS ----
+name=Cetaceans-vs.-ships
+# Human-readable display name shown in the manager. Free text, can contain spaces.
+
+qgisMinimumVersion=4.2
+# Oldest QGIS that will offer this plugin. MAJOR.MINOR (or MAJOR.MINOR.PATCH).
+
+description=Validates parcel polygons for gaps, overlaps, and invalid geometries.
+# One short line. Shown in the manager list. No line breaks.
+
+version=1.0.0
+# Plugin version. Use semantic versioning MAJOR.MINOR.PATCH.
+
+author=yan-sln
+# Author or organisation name. Plain text.
+
+#email=alice@example.com
+# Contact address. Hidden from the public listing but required.
+
+about=Interface of Cetaceans-vs.-ships IA04 project.
+# Longer paragraph shown on the plugin's page. Continuation lines are indented.
+
+# ---- OPTIONAL BUT STRONGLY RECOMMENDED ----
+repository=https://github.com/yan-sln/Cetaceans-vs.-ships
+# Public source URL. Required for trust; reviewers check it.
+
+tracker=https://github.com/yan-sln/Cetaceans-vs.-ships/issues
+# Bug tracker URL.
+
+homepage=https://github.com/yan-sln/Cetaceans-vs.-ships/blob/main/README.md
+# Documentation or landing page.
+
+icon=resources/icon.png
+# Path relative to the plugin folder, or a Qt resource path (:/...).
+
+qgisMaximumVersion=4.99
+# Newest QGIS that will offer the plugin. Set high to stay visible.
+
+changelog=1.0.0 - Initial release
+# Multi-line, newest first. Rendered on the plugin page.
