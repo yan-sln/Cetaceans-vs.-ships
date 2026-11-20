@@ -6,11 +6,13 @@ import (
 	"server/internal/agents"
 	"server/internal/environment"
 	"server/internal/geometry"
+	"server/internal/simulation"
 )
 
 func main() {
 
-	world := environment.World{
+	// Initialisation du monde maritime.
+	monde := environment.World{
 		Width:  1000,
 		Height: 1000,
 
@@ -72,22 +74,46 @@ func main() {
 		},
 	}
 
-	fmt.Printf("Monde : %.0f x %.0f m\n",
-		world.Width, world.Height)
-
-	fmt.Println("Navires :", len(world.Ships))
-	fmt.Println("Cetaces :", len(world.Cetaceans))
-	fmt.Println("Zones sensibles :", len(world.Zones))
-	fmt.Println("Routes :", len(world.Routes))
-
-	for _, ship := range world.Ships {
-		fmt.Printf("Navire %d - Dans une zone sensible : %t\n",
-			ship.ID,
-			world.IsInSensitiveZone(ship.Position))
+	// Configuration de la simulation.
+	configuration := simulation.Config{
+		PasTemps: 1,
+		Duree:    10,
 	}
 
-	for _, route := range world.Routes {
-		fmt.Printf("Route %d - Longueur : %.0f m\n",
-			route.ID, route.Length())
+	// Creation du moteur.
+	moteur, erreur := simulation.NewEngine(&monde, configuration)
+
+	if erreur != nil {
+		fmt.Println(erreur)
+		return
 	}
+
+	// Demarrage de la simulation.
+	moteur.Start()
+
+	// Boucle principale de simulation.
+	for moteur.Step() {
+
+		fmt.Printf("\nTemps : %.1f s | Iteration : %d\n",
+			moteur.Horloge.TempsEcoule,
+			moteur.Horloge.Iteration)
+
+		// Affichage des navires.
+		for _, navire := range monde.Ships {
+			fmt.Printf("Navire %d : (%.1f, %.1f)\n",
+				navire.ID,
+				navire.Position.X,
+				navire.Position.Y)
+		}
+
+		// Affichage des cetaces.
+		for _, cetace := range monde.Cetaceans {
+			fmt.Printf("Cetace %d : (%.1f, %.1f)\n",
+				cetace.ID,
+				cetace.Position.X,
+				cetace.Position.Y)
+		}
+	}
+
+	fmt.Println("\nEtat final :", moteur.Etat)
 }
