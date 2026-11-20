@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"math"
+	"server/internal/agents"
 	"server/internal/geometry"
 )
 
@@ -10,27 +12,50 @@ func main() {
 	fmt.Println("    Cetaceans vs. Ships")
 	fmt.Println("==============================")
 
-	fmt.Println("Moteur de simulation initialisé")
+	ship := agents.Ship{
+		ID:        1,
+		Position:  geometry.Position{X: 10, Y: 50},
+		Speed:     10,
+		Direction: 0,
+		Length:    100,
+		Width:     20,
+		Draft:     5,
+	}
 
-	boat := geometry.Position{X: 10, Y: 50}
-	whale := geometry.Position{X: 80, Y: 50}
+	whale := agents.Cetacean{
+		ID:        1,
+		Species:   "Cachalot",
+		Position:  geometry.Position{X: 80, Y: 50},
+		Speed:     2,
+		Direction: math.Pi,
+		Depth:     0,
+		Alive:     true,
+	}
 
-	fmt.Printf("Position du bateau : (%.2f, %.2f)\n",
-		boat.X, boat.Y)
+	fmt.Println("\nEtat initial :")
+	fmt.Printf("Navire : (%.2f, %.2f)\n",
+		ship.Position.X, ship.Position.Y)
 
-	fmt.Printf("Position du cétacé : (%.2f, %.2f)\n",
-		whale.X, whale.Y)
+	fmt.Printf("Cetace : (%.2f, %.2f)\n",
+		whale.Position.X, whale.Position.Y)
 
-	distance := boat.Distance(whale)
+	fmt.Printf("Distance : %.2f m\n",
+		ship.Position.Distance(whale.Position))
 
-	fmt.Printf("Distance initiale : %.2f m\n", distance)
+	// On fait avancer les deux agents de 5 secondes.
+	dt := 5.0
 
-	// Déplacement du bateau à 10 m/s pendant 5 secondes.
-	boat = boat.Move(10, 0, 5)
+	ship.Move(dt)
+	whale.Move(dt)
 
-	fmt.Printf("Nouvelle position du bateau : (%.2f, %.2f)\n",
-		boat.X, boat.Y)
+	fmt.Println("\nEtat apres 5 secondes :")
 
-	fmt.Printf("Nouvelle distance : %.2f m\n",
-		boat.Distance(whale))
+	fmt.Printf("Navire : (%.2f, %.2f)\n",
+		ship.Position.X, ship.Position.Y)
+
+	fmt.Printf("Cetace : (%.2f, %.2f)\n",
+		whale.Position.X, whale.Position.Y)
+
+	fmt.Printf("Distance : %.2f m\n",
+		ship.Position.Distance(whale.Position))
 }
