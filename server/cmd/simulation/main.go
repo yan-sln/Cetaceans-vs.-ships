@@ -18,39 +18,46 @@ func main() {
 
 		Ships: []agents.Ship{
 			{
-				ID:       1,
-				Position: geometry.Position{X: 100, Y: 500},
-				Speed:    10,
-				Length:   100,
-				Width:    20,
-				Draft:    5,
+				ID:          1,
+				Position:    geometry.Position{X: 100, Y: 500},
+				Speed:       10,
+				Length:      100,
+				Width:       20,
+				Draft:       5,
+				NumeroRoute: 1,
 			},
 			{
-				ID:       2,
-				Position: geometry.Position{X: 450, Y: 500},
-				Speed:    8,
-				Length:   80,
-				Width:    15,
-				Draft:    4,
+				ID:          2,
+				Position:    geometry.Position{X: 450, Y: 500},
+				Speed:       8,
+				Length:      80,
+				Width:       15,
+				Draft:       4,
+				NumeroRoute: 2,
 			},
 		},
 
 		Cetaceans: []agents.Cetacean{
 			{
-				ID:        1,
-				Species:   "Cachalot",
-				Position:  geometry.Position{X: 500, Y: 500},
-				Speed:     2,
-				Direction: math.Pi,
-				Alive:     true,
+				ID:               1,
+				Species:          "Cachalot",
+				Position:         geometry.Position{X: 500, Y: 500},
+				Speed:            2,
+				Direction:        math.Pi,
+				Alive:            true,
+				VitesseVerticale: 3,
+				ProfondeurMax:    12,
 			},
 			{
-				ID:       2,
-				Species:  "Dauphin",
-				Position: geometry.Position{X: 750, Y: 800},
-				Speed:    3,
-				Depth:    10,
-				Alive:    true,
+				ID:               2,
+				Species:          "Dauphin",
+				Position:         geometry.Position{X: 750, Y: 800},
+				Speed:            3,
+				Depth:            10,
+				Alive:            true,
+				VitesseVerticale: -2,
+				ProfondeurMax:    20,
+				VitesseRotation:  0.05,
 			},
 		},
 
@@ -69,6 +76,14 @@ func main() {
 					{X: 100, Y: 500},
 					{X: 500, Y: 500},
 					{X: 900, Y: 500},
+				},
+			},
+			{
+				ID: 2,
+				Waypoints: []geometry.Position{
+					{X: 450, Y: 500},
+					{X: 450, Y: 540},
+					{X: 700, Y: 540},
 				},
 			},
 		},
@@ -108,10 +123,11 @@ func main() {
 
 		// Affichage des cetaces.
 		for _, cetace := range monde.Cetaceans {
-			fmt.Printf("Cetace %d : (%.1f, %.1f)\n",
+			fmt.Printf("Cetace %d : (%.1f, %.1f) | Profondeur : %.1f m\n",
 				cetace.ID,
 				cetace.Position.X,
-				cetace.Position.Y)
+				cetace.Position.Y,
+				cetace.Depth)
 		}
 	}
 

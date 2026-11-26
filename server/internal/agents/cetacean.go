@@ -1,6 +1,9 @@
 package agents
 
-import "server/internal/geometry"
+import (
+	"math"
+	"server/internal/geometry"
+)
 
 type Cetacean struct {
 	ID        int
@@ -10,13 +13,49 @@ type Cetacean struct {
 	Direction float64
 	Depth     float64
 	Alive     bool
+
+	VitesseRotation  float64
+	VitesseVerticale float64
+	ProfondeurMax    float64
 }
 
-// Déplacer le cétacé pendant dt secondes
-func (c *Cetacean) Move(dt float64) {
-	if !c.Alive {
+// Deplace le cetace et actualise sa profondeur.
+func (cetace *Cetacean) Move(pasTemps float64) {
+	if !cetace.Alive || pasTemps <= 0 {
 		return
 	}
 
-	c.Position = c.Position.Move(c.Speed, c.Direction, dt)
+	// Changement progressif de direction.
+	cetace.Direction += cetace.VitesseRotation * pasTemps
+
+	// Deplacement horizontal.
+	cetace.Position = cetace.Position.Move(
+		cetace.Speed, cetace.Direction, pasTemps)
+
+	// Aucun mouvement vertical si la plongee n'est pas configuree.
+	if cetace.ProfondeurMax <= 0 || cetace.VitesseVerticale == 0 {
+		return
+	}
+
+	// Calcul de la nouvelle profondeur.
+	profondeur := cetace.Depth + cetace.VitesseVerticale*pasTemps
+
+	// Rebond aux limites : surface et profondeur maximale.
+	for profondeur < 0 || profondeur > cetace.ProfondeurMax {
+		if profondeur > cetace.ProfondeurMax {
+			profondeur = 2*cetace.ProfondeurMax - profondeur
+			cetace.VitesseVerticale = -math.Abs(cetace.VitesseVerticale)
+		} else {
+			profondeur = -profondeur
+			cetace.VitesseVerticale = math.Abs(cetace.VitesseVerticale)
+		}
+	}
+
+	cetace.Depth = profondeur
+
+	if cetace.Depth == 0 {
+		cetace.VitesseVerticale = math.Abs(cetace.VitesseVerticale)
+	} else if cetace.Depth == cetace.ProfondeurMax {
+		cetace.VitesseVerticale = -math.Abs(cetace.VitesseVerticale)
+	}
 }

@@ -33,6 +33,16 @@ func NewEngine(monde *environment.World, configuration Config) (*Engine, error) 
 		return nil, erreur
 	}
 
+	// Verifie que les routes attribuees aux navires existent.
+	for _, navire := range monde.Ships {
+		if navire.NumeroRoute != 0 &&
+			monde.TrouverRoute(navire.NumeroRoute) == nil {
+			return nil, fmt.Errorf(
+				"route %d introuvable pour le navire %d",
+				navire.NumeroRoute, navire.ID)
+		}
+	}
+
 	return &Engine{
 		Monde:         monde,
 		Configuration: configuration,
@@ -83,9 +93,18 @@ func (moteur *Engine) Step() bool {
 		pasTemps = tempsRestant
 	}
 
-	// Deplacement de tous les navires
-	for i := range moteur.Monde.Ships {
-		moteur.Monde.Ships[i].Move(pasTemps)
+	// Deplacement des navires.
+	for indice := range moteur.Monde.Ships {
+		navire := &moteur.Monde.Ships[indice]
+
+		if navire.NumeroRoute == 0 {
+			// Sans route, on garde le deplacement simple.
+			navire.Move(pasTemps)
+		} else {
+			// Sinon, on suit la route attribuee.
+			route := moteur.Monde.TrouverRoute(navire.NumeroRoute)
+			navire.SuivreRoute(pasTemps, route.Waypoints)
+		}
 	}
 
 	// Deplacement de tous les cetaces

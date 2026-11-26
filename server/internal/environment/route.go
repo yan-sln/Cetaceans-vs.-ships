@@ -7,7 +7,7 @@ type Route struct {
 	Waypoints []geometry.Position
 }
 
-// Calcule la longueur totale de la route en metres.
+// Calculer la longueur totale de la route en metres
 func (r Route) Length() float64 {
 	total := 0.0
 
@@ -16,4 +16,15 @@ func (r Route) Length() float64 {
 	}
 
 	return total
+}
+
+// Recherche une route a partir de son identifiant.
+func (monde *World) TrouverRoute(identifiant int) *Route {
+	for indice := range monde.Routes {
+		if monde.Routes[indice].ID == identifiant {
+			return &monde.Routes[indice]
+		}
+	}
+
+	return nil
 }
