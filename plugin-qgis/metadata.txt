@@ -1,6 +1,6 @@
 [general]
 # ---- REQUIRED KEYS ----
-name=Cetaceans-vs.-ships
+name=Cetaceans vs Ships
 # Human-readable display name shown in the manager. Free text, can contain spaces.
 
 qgisMinimumVersion=4.2

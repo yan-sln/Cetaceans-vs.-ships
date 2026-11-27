@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
+from .main import CetaceansVsShipsPlugin
+
 def classFactory(iface):
-    """Entry point required by QGIS to load the plugin."""
-    from .main import Plugin
-    return Plugin(iface)
+    """Point d'entrée du plugin QGIS."""
+    return CetaceansVsShipsPlugin(iface)
